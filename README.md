@@ -38,7 +38,7 @@ The loss decreases steadily and converges. However, this convergence does not tr
 
 ## Sample Prediction
 
-![Sample Prediction](Screenshot 2026-03-02 195133.png)
+![Sample Prediction](Sample Output.png)
 
 The model produces very few valid detections, indicating severe objectness collapse.
 
