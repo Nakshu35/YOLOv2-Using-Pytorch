@@ -55,6 +55,31 @@ This experiment highlights a known issue in object detection training:
 
 Because most grid cells contain no object, the model minimizes total loss by suppressing objectness confidence across all predictions.
 
+### Loss Component Logs
+
+To investigate the collapse, individual loss terms were logged separately during training.
+
+#### Epoch 0 (random initialization)
+
+| total | noobj | obj | cls | box |
+|---|---|---|---|---|
+| 11.56 | 0.086 | 1.92 | 4.11 | 4.82 |
+| 13.03 | 0.078 | 2.14 | 5.18 | 5.08 |
+| 32.50 | 0.069 | 4.19 | 9.02 | 18.73 |
+
+#### Epoch 6 (after fixes)
+
+| total | noobj | obj | cls | box |
+|---|---|---|---|---|
+| 7.78 | 0.072 | 1.71 | 1.99 | 4.00 |
+| 8.24 | 0.029 | 2.35 | 1.79 | 4.07 |
+| 10.58 | 0.012 | 1.98 | 2.13 | 6.45 |
+
+Observation:
+- obj loss stays ~2.5 across all epochs.
+- Model never learns to predict confidence=1 for real objects.
+- noobj approaches 0 — model predicts background everywhere.
+
 As a result:
 - Total loss becomes very small.
 - Recall approaches zero.
